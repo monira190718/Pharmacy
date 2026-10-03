@@ -574,3 +574,149 @@ button{
     font-weight:600;
     margin-bottom:18px;
 }
+
+.profile-page{
+    max-width:900px;
+    margin:40px auto;
+    padding:0 20px;
+}
+
+.profile-card{
+    background:#fffdf8;
+    border:1px solid #ddd4c5;
+    border-radius:18px;
+    padding:28px;
+    margin-bottom:24px;
+}
+
+.profile-card h1,
+.profile-card h2{
+    margin:0 0 8px;
+    color:#073f34;
+}
+
+.profile-subtitle{
+    color:#7a746b;
+    margin-bottom:28px;
+}
+
+.profile-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.field{
+    margin-bottom:20px;
+}
+
+.field label{
+    display:block;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.field input,
+.field textarea{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid #d9d0c2;
+    border-radius:10px;
+    box-sizing:border-box;
+}
+
+.field input[readonly]{
+    background:#f3f0e8;
+}
+
+.profile-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+}
+
+.btn-primary{
+    background:#0c604f;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:12px 20px;
+    cursor:pointer;
+}
+
+.btn-secondary{
+    border:1px solid #0c604f;
+    color:#0c604f;
+    border-radius:10px;
+    padding:11px 20px;
+    text-decoration:none;
+}
+
+
+@media(max-width:700px){
+
+    .profile-grid{
+        grid-template-columns:1fr;
+    }
+
+    .profile-page{
+        margin:20px auto;
+    }
+
+    .profile-card{
+        padding:20px;
+    }
+
+    .profile-actions{
+        flex-direction:column;
+    }
+
+    .btn-primary,
+    .btn-secondary{
+        width:100%;
+        text-align:center;
+        box-sizing:border-box;
+    }
+}
+
+.customer-header{
+    width:100%;
+    background:#0f3f36;
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:18px 40px;
+    box-sizing:border-box;
+}
+
+.customer-header .logo{
+    font-size:22px;
+    font-weight:700;
+    color:white;
+}
+
+.customer-header nav{
+    display:flex;
+    align-items:center;
+    gap:28px;
+}
+
+.customer-header nav a{
+    color:white;
+    text-decoration:none;
+    font-size:15px;
+    font-weight:500;
+}
+
+.customer-header nav a:hover{
+    opacity:.8;
+}
+
+.customer-header nav a.active{
+    border:1px solid white;
+    padding:7px 10px;
+    border-radius:6px;
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile — Medix Pharmacy</title>
+
+    <link rel="stylesheet"
+          th:href="@{/customer.css}">
+</head>
+
+<body>
+
+<header class="customer-header">
+
+    <div class="logo">
+        Medix Pharmacy
+    </div>
+
+    <nav>
+        <a th:href="@{/customer}">
+            Browse Medicines
+        </a>
+
+        <a th:href="@{/my-orders}">
+            My Orders
+        </a>
+
+        <a th:href="@{/customer/profile}"
+           class="active">
+            Profile
+        </a>
+
+        <a th:href="@{/logout}">
+            Logout
+        </a>
+    </nav>
+
+</header>
+
+
+<main class="profile-page">
+
+    <!-- ========================= -->
+    <!-- PROFILE INFORMATION -->
+    <!-- ========================= -->
+
+    <section class="profile-card">
+
+        <h1>My Profile</h1>
+
+        <p class="profile-subtitle">
+            Manage your personal information.
+        </p>
+
+
+        <form th:action="@{/customer/profile/update}"
+              method="post">
+
+            <div class="profile-grid">
+
+                <div class="field">
+
+                    <label>Full Name</label>
+
+                    <input type="text"
+                           name="fullname"
+                           th:value="${customer.fullname}"
+                           required>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Email Address</label>
+
+                    <input type="email"
+                           th:value="${customer.email}"
+                           readonly>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Phone Number</label>
+
+                    <input type="text"
+                           name="phone"
+                           th:value="${customer.phone}">
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Address</label>
+
+                <textarea name="address"
+                          rows="4"
+                          th:text="${customer.address}">
+                </textarea>
+
+            </div>
+
+
+            <div class="profile-actions">
+
+                <a th:href="@{/customer}"
+                   class="btn-secondary">
+                    Back to Dashboard
+                </a>
+
+                <button type="submit"
+                        class="btn-primary">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- CHANGE PASSWORD -->
+    <!-- ========================= -->
+
+    <section class="profile-card">
+
+        <h2>Change Password</h2>
+
+        <p class="profile-subtitle">
+            Enter your current password before choosing a new one.
+        </p>
+
+
+        <form th:action="@{/customer/profile/password}"
+              method="post">
+
+            <div class="field">
+
+                <label>Current Password</label>
+
+                <input type="password"
+                       name="oldPassword"
+                       required>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>New Password</label>
+
+                <input type="password"
+                       name="newPassword"
+                       required>
+
+            </div>
+
+
+            <button type="submit"
+                    class="btn-primary">
+                Change Password
+            </button>
+
+        </form>
+
+    </section>
+
+</main>
+
+</body>
+</html>

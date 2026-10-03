@@ -6,10 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,16 +18,13 @@ public class CustomerProfileController {
     private final PasswordEncoder passwordEncoder;
 
 
-
     @PostMapping("/profile/update")
     public String updateProfile(
             @ModelAttribute User customer,
             Authentication authentication
     ){
 
-
-        String email =
-                authentication.getName();
+        String email = authentication.getName();
 
 
         User oldUser =
@@ -56,8 +51,7 @@ public class CustomerProfileController {
         }
 
 
-        return "redirect:/customer";
-
+        return "redirect:/customer/profile";
     }
 
 
@@ -69,10 +63,11 @@ public class CustomerProfileController {
             Authentication authentication
     ){
 
-
         User user =
                 userRepository
-                        .findByEmail(authentication.getName())
+                        .findByEmail(
+                                authentication.getName()
+                        )
                         .orElse(null);
 
 
@@ -82,18 +77,37 @@ public class CustomerProfileController {
                         user.getPassword()
                 )){
 
-
             user.setPassword(
-                    passwordEncoder.encode(newPassword)
+                    passwordEncoder.encode(
+                            newPassword
+                    )
             );
 
-
             userRepository.save(user);
-
         }
 
 
-        return "redirect:/customer";
+        return "redirect:/customer/profile";
+    }
 
+    @GetMapping("/profile")
+    public String profile(
+            Model model,
+            Authentication authentication
+    ){
+
+        User customer =
+                userRepository
+                        .findByEmail(
+                                authentication.getName()
+                        )
+                        .orElse(null);
+
+        model.addAttribute(
+                "customer",
+                customer
+        );
+
+        return "customer-profile";
     }
 }
