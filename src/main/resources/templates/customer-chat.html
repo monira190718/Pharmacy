@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+
+    <title>
+        Chat Support
+    </title>
+
+
+    <link rel="stylesheet" href="/customer.css">
+
+</head>
+
+
+
+<body>
+
+
+<div class="chat-box">
+
+
+    <h2>
+        Pharmacy Support
+    </h2>
+
+
+
+    <div class="messages">
+
+
+        <div th:each="msg:${messages}">
+
+
+            <p>
+
+
+                <b th:text="${msg.sender}">
+                    CUSTOMER
+                </b>
+
+
+                :
+
+                <span th:text="${msg.message}">
+Hello
+</span>
+
+
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+    <form action="/customer/chat/send"
+          method="post"
+          onsubmit="return validateMessage()">
+
+
+
+<textarea
+        id="message"
+        name="message"
+        placeholder="Type your message..."
+></textarea>
+
+
+        <p id="wordCount">
+            0 / 100 words
+        </p>
+
+        <button type="submit">
+            Send
+        </button>
+
+
+
+    </form>
+
+
+    <script>
+
+        function validateMessage(){
+
+            let message =
+                document.getElementById("message").value.trim();
+
+
+            if(message === ""){
+
+                alert("Please write a message before sending.");
+
+                return false;
+
+            }
+
+
+            return true;
+
+        }
+
+
+    </script>
+
+    <script>
+
+        function validateMessage(){
+
+            let message =
+                document.getElementById("message").value.trim();
+
+
+            let words = message.split(/\s+/).filter(word => word.length > 0);
+
+
+            if(message === ""){
+
+                alert("Please write a message before sending.");
+
+                return false;
+            }
+
+
+            if(words.length > 100){
+
+                alert("Message cannot contain more than 100 words.");
+
+                return false;
+            }
+
+
+            return true;
+
+        }
+
+
+
+        function countWords(){
+
+            let message =
+                document.getElementById("message").value.trim();
+
+
+            let words =
+                message.split(/\s+/).filter(word => word.length > 0);
+
+
+            document.getElementById("wordCount").innerHTML =
+                words.length + " / 100 words";
+
+
+        }
+
+    </script>
+
+</div>
+
+</body>
+
+
+</html>

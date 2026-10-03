@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>My Orders</title>
+
+
+    <style>
+
+
+        body{
+
+            background:#f7f3e9;
+            font-family:Arial,sans-serif;
+
+        }
+
+
+
+        .container{
+
+            margin:50px auto;
+            width:90%;
+
+            background:white;
+            padding:30px;
+
+            border-radius:20px;
+
+        }
+
+
+
+        h1{
+
+            color:#1f5a4a;
+
+        }
+
+
+
+        table{
+
+            width:100%;
+            border-collapse:collapse;
+
+        }
+
+
+
+        th{
+
+            background:#1f5a4a;
+            color:white;
+            padding:15px;
+            text-align:left;
+
+        }
+
+
+
+        td{
+
+            padding:15px;
+            border-bottom:1px solid #ddd;
+
+        }
+
+
+
+        .status{
+
+            padding:6px 12px;
+            border-radius:20px;
+            background:#e5f0eb;
+            color:#1f5a4a;
+
+        }
+
+
+
+    </style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <h1>
+        My Orders
+    </h1>
+
+
+
+    <table>
+
+
+        <thead>
+
+        <tr>
+
+            <th>Medicine</th>
+
+            <th>Quantity</th>
+
+            <th>Price</th>
+
+            <th>Date</th>
+
+            <th> Payment </th>
+
+            <th>Status</th>
+
+            <th>Address</th>
+
+
+        </tr>
+
+
+        </thead>
+
+
+
+        <tbody>
+
+
+        <tr th:each="order:${orders}">
+
+
+            <td th:text="${order.medicineName}">
+            </td>
+
+
+            <td th:text="${order.quantity}">
+            </td>
+
+
+            <td>
+                ৳
+                <span th:text="${order.price}">
+</span>
+            </td>
+
+
+
+            <td th:text="${order.deliveryDate}">
+            </td>
+
+            <td>
+
+<span class="payment"
+      th:text="${order.paymentMethod}">
+
+      bKash
+
+</span>
+
+            </td>
+
+            <td>
+
+<span class="status"
+      th:text="${order.status}">
+</span>
+
+            </td>
+
+
+
+            <td th:text="${order.address}">
+            </td>
+
+        </tr>
+
+
+        </tbody>
+
+    </table>
+
+
+</div>
+
+
+</body>
+
+</html>

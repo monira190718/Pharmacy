@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Add Category</title>
+
+    <link rel="stylesheet" href="/css/admin.css">
+
+
+    <style>
+
+
+        .form-container{
+
+            background:white;
+            padding:30px;
+            border-radius:20px;
+            max-width:900px;
+
+        }
+
+
+        .form-group{
+
+            display:flex;
+            flex-direction:column;
+            margin-bottom:20px;
+
+        }
+
+
+        label{
+
+            margin-bottom:8px;
+            font-weight:600;
+
+        }
+
+
+        input,
+        select,
+        textarea{
+
+            padding:12px;
+            border:1px solid #ddd;
+            border-radius:10px;
+            font-size:15px;
+
+        }
+
+
+        textarea{
+
+            resize:none;
+
+        }
+
+
+
+        .btn-area{
+
+            margin-top:25px;
+
+        }
+
+
+        button{
+
+            padding:12px 25px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+
+        }
+
+
+
+        .save-btn{
+
+            background:#4C7A64;
+            color:white;
+
+        }
+
+
+
+        .cancel-btn{
+
+            background:#eee;
+            margin-left:10px;
+
+        }
+
+
+    </style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+<div class="form-container">
+
+
+    <h1>
+        Add New Category
+    </h1>
+
+
+    <form action="/admin/category/save"
+          method="post"
+          th:object="${category}">
+
+
+
+        <!-- for edit update -->
+
+
+
+        <!-- Category -->
+
+        <div class="form-group">
+
+
+            <label>
+                Category
+            </label>
+
+
+
+            <select th:field="*{categoryName}"
+                    required>
+
+
+                <option value="">
+                    Select Category
+                </option>
+
+
+                <option value="Tablet">
+                    Tablet
+                </option>
+
+
+                <option value="Capsule">
+                    Capsule
+                </option>
+
+
+                <option value="Syrup">
+                    Syrup
+                </option>
+
+
+                <option value="Injection">
+                    Injection
+                </option>
+
+
+                <option value="Ointment">
+                    Ointment
+                </option>
+
+
+                <option value="Drops">
+                    Drops
+                </option>
+
+
+            </select>
+
+        </div>
+
+
+        <!-- Description -->
+
+
+        <div class="form-group">
+
+
+            <label>
+                Description
+            </label>
+
+
+
+            <textarea rows="4"
+                      th:field="*{description}"
+                      placeholder="Enter category description"
+                      required>
+        </textarea>
+
+
+
+        </div>
+
+
+        <!-- Status -->
+
+
+        <div class="form-group">
+
+
+            <label>
+                Status
+            </label>
+
+
+            <select th:field="*{status}"
+                    required>
+
+
+                <option value="">
+                    Select Status
+                </option>
+
+
+                <option value="Active">
+                    Active
+                </option>
+
+
+                <option value="Inactive">
+                    Inactive
+                </option>
+
+
+
+            </select>
+
+        </div>
+
+
+        <div class="btn-area">
+
+
+            <button type="submit"
+                    class="save-btn">
+
+
+                Save Category
+
+
+            </button>
+
+
+            <a href="/admin">
+
+
+                <button type="button"
+                        class="cancel-btn">
+
+
+                    Cancel
+
+
+                </button>
+
+
+            </a>
+
+        </div>
+
+
+    </form>
+
+
+
+</div>
+
+</body>
+
+
+</html>

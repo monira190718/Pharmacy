@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Customer Chats</title>
+
+    <link rel="stylesheet" href="/admin.css">
+
+</head>
+
+
+<body>
+
+
+<div class="panel chat-panel">
+
+
+    <a href="/admin" class="back-btn">
+        ← Back Dashboard
+    </a>
+
+    <h2>
+        Customer Chats
+    </h2>
+
+
+
+    <table class="chat-table">
+
+
+        <thead>
+
+        <tr>
+
+            <th>
+                Customer Name
+            </th>
+
+            <th>
+                Email
+            </th>
+
+            <th>
+                Action
+            </th>
+
+
+        </tr>
+
+        </thead>
+
+
+
+        <tbody>
+
+
+        <tr th:each="chat:${customers}">
+
+
+            <td>
+
+                <div class="customer-info">
+
+                    <div class="avatar">
+<span th:text="${#strings.substring(chat.customerName,0,1)}">
+R
+</span>
+                    </div>
+
+
+                    <div>
+
+                        <strong th:text="${chat.customerName}">
+                            Riya
+                        </strong>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </td>
+
+
+
+            <td th:text="${chat.customerEmail}">
+                riya@gmail.com
+            </td>
+
+
+
+            <td>
+
+
+                <a th:href="@{/admin/chat/{email}(email=${chat.customerEmail})}">
+
+
+                    <button class="chat-btn">
+
+                        Open Chat
+
+                    </button>
+
+
+                </a>
+
+
+            </td>
+
+
+        </tr>
+
+
+
+        </tbody>
+
+
+    </table>
+
+
+</div>
+
+
+</body>
+
+
+</html>

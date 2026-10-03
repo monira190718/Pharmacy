@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+
+    <title>
+        Customer Chat
+    </title>
+
+    <link rel="stylesheet" href="/admin.css">
+
+
+</head>
+
+
+<body>
+
+
+<div class="chat-container">
+
+
+    <div class="chat-header">
+
+        <a href="/admin/chats" class="back-btn">
+            ← Back
+        </a>
+
+        <h2>
+            Customer Chat
+        </h2>
+
+    </div>
+
+
+
+    <div class="chat-body">
+
+
+
+        <div th:each="msg:${messages}"
+             th:class="${msg.sender=='ADMIN'} ? 'message admin' : 'message customer'">
+
+
+            <div class="sender"
+                 th:text="${msg.sender}">
+                CUSTOMER
+            </div>
+
+
+            <div class="text"
+                 th:text="${msg.message}">
+                Hello
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+    <form action="/admin/chat/reply"
+          method="post"
+          class="chat-form">
+
+
+
+        <input type="hidden"
+               name="email"
+               th:value="${email}">
+
+
+
+        <textarea
+                name="message"
+                placeholder="Write your reply..."
+                required></textarea>
+
+
+
+        <button>
+            Send Reply
+        </button>
+
+
+    </form>
+
+
+
+</div>
+
+
+
+</body>
+
+
+</html>

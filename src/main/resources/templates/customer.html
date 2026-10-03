@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedRoot — My Account</title>
+    <link rel="stylesheet" href="customer.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Top nav -->
+<header class="topnav">
+    <div class="brand">
+        <span class="brand-mark">Rx</span>
+        <span class="brand-name">Medix</span>
+    </div>
+
+    <nav class="topnav-links">
+        <a href="#" class="active">Home</a>
+
+        <a href="javascript:void(0)"
+           onclick="showCustomerSection('medicines')">
+            Browse Medicines
+        </a>
+
+        <a href="/my-orders">
+            My Orders
+        </a>
+        <a href="javascript:void(0)"
+           onclick="showCustomerSection('profile')">
+            Profile
+        </a>
+    </nav>
+
+    <div class="topnav-actions">
+
+        <a href="/logout" class="logout-link">
+            Logout
+        </a>
+
+        <button class="icon-btn cart" aria-label="Cart">🛒<span class="badge">3</span></button>
+        <div class="avatar">Medix</div>
+    </div>
+</header>
+
+<main class="page">
+
+    <!-- Welcome banner -->
+    <section class="banner">
+        <div>
+            <h1 class="eyebrow-free">Welcome back</h1>
+            <h1>
+                Hi <span th:text="${customerName}">Customer</span>, Plan your refill early to stay on track with your health.
+            </h1>
+            <p class="banner-sub">Kindly complete the payment before confirming your order.
+                Please be advised that completed payments are non-refundable.</p>
+
+        </div>
+    </section>
+
+    <div class="grid-3">
+
+        <!-- Active order tracking -->
+        <section class="panel span-2">
+
+            <div class="panel-head">
+                <h2>Your Orders</h2>
+                <a href="/my-orders" class="link">
+                    Order history →
+                </a>
+            </div>
+
+
+
+            <div th:each="order : ${orders}" class="order-box">
+
+
+                <div class="order-summary">
+
+                    <div>
+                        <h3>
+                            Order #
+                            <span th:text="${order.id}">
+        000000
+    </span>
+                        </h3>
+
+
+                        <p class="muted">
+
+                    <span th:text="${order.medicineName}">
+                        Medicine
+                    </span>
+
+                            · Quantity:
+
+                            <span th:text="${order.quantity}">
+                        1
+                    </span>
+
+                            · ৳
+
+                            <span th:text="${order.price}">
+                        0
+                    </span>
+
+                        </p>
+
+                    </div>
+
+
+                    <span class="tag tag-moss"
+                          th:text="${order.status}">
+                Pending
+            </span>
+
+
+                </div>
+
+
+
+                <ol class="tracker">
+
+
+                    <!-- Confirmed -->
+
+                    <li th:classappend="
+            ${order.status=='Confirmed'
+            or order.status=='Out for Delivery'
+            or order.status=='Delivered'}
+            ?'done':''">
+
+                <span>
+                    Confirmed
+                </span>
+
+                    </li>
+
+
+
+                    <!-- Out for Delivery -->
+
+                    <li th:classappend="
+            ${order.status=='Out for Delivery'
+            or order.status=='Delivered'}
+            ?'done':''">
+
+
+                <span>
+                    Out for Delivery
+                </span>
+
+
+                    </li>
+
+
+
+                    <!-- Delivered -->
+
+                    <li th:classappend="
+            ${order.status=='Delivered'}
+            ?'done':''">
+
+
+                <span>
+                    Delivered
+                </span>
+
+
+                    </li>
+
+
+                </ol>
+
+
+            </div>
+
+
+        </section>
+        <!-- Reminders -->
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Need help?</h2>
+            </div>
+            <p class="help-text">Questions about a dose, an order, or a return — our pharmacist team replies within the hour.</p>
+            <a href="/customer/chat">
+                <button class="btn-outline">
+                    Start a chat
+                </button>
+            </a>
+
+            <div class="review-prompt">
+
+
+                <strong>
+                    Your Reviews
+                </strong>
+
+
+                <!-- Existing reviews -->
+
+                <div th:if="${!#lists.isEmpty(reviews)}">
+
+
+                    <div th:each="review:${reviews}"
+                         class="customer-review">
+
+
+                        <div class="stars"
+                             th:text="${'★'.repeat(review.rating)}">
+                            ★★★★★
+                        </div>
+
+
+                        <p th:text="${review.comment}">
+                            Good service
+                        </p>
+
+
+                        <small class="muted">
+                            Submitted successfully
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <!-- Always visible -->
+
+                <a href="/review"
+                   class="link">
+
+                    Leave a review →
+
+                </a>
+
+
+            </div>
+        </section>
+    </div>
+
+    <div class="grid-3">
+
+        <!-- Browse / recommended -->
+        <section class="panel span-2"
+                 id="customer-medicine-section">
+
+            <div class="panel-head">
+
+                <h2>Frequently reordered</h2>
+
+
+                <div class="medicine-search-box">
+
+                    <input type="text"
+                           id="medicineSearch"
+                           placeholder="Search by medicine, generic, category or manufacturer..."
+                           oninput="filterMedicines()">
+
+                </div>
+
+
+                <a href="javascript:void(0)"
+                   class="link"
+                   onclick="document.getElementById('medicineSearch').focus();">
+
+                    Browse all medicines →
+
+                </a>
+
+            </div>
+
+
+            <p id="noMedicineFound"
+               class="no-medicine-found"
+               style="display:none;">
+
+                Medicine not available.
+
+            </p>
+
+
+
+            <div class="product-card medicine-card"
+                 th:each="medicine:${medicines}"
+
+                 th:attr="
+         data-name=${medicine.medicineName},
+         data-generic=${medicine.genericName},
+         data-category=${medicine.category},
+         data-manufacturer=${medicine.manufacturer}">
+
+
+                <div class="product-thumb">
+                    💊
+                </div>
+
+
+                <strong th:text="${medicine.medicineName}">
+                    Medicine Name
+                </strong>
+
+
+                <span class="muted"
+                      th:text="${medicine.genericName}">
+            Generic Name
+        </span>
+
+
+                <span class="muted">
+            Category:
+            <span th:text="${medicine.category}">
+            </span>
+        </span>
+
+
+                <span class="muted">
+            Manufacturer:
+            <span th:text="${medicine.manufacturer}">
+            </span>
+        </span>
+
+
+                <span class="muted">
+            Batch:
+            <span th:text="${medicine.batchNo}">
+            </span>
+        </span>
+
+
+                <span class="muted">
+            Expiry:
+            <span th:text="${medicine.expiryDate}">
+            </span>
+        </span>
+
+
+                <div class="product-foot">
+
+            <span class="price">
+                ৳
+                <span th:text="${medicine.unitPrice}">
+                </span>
+            </span>
+
+
+                    <a th:href="@{/order/{id}(id=${medicine.id})}">
+
+                        <button class="btn-small">
+                            Order
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Support -->
+
+        <section id="customer-profile-section"
+                 class="customer-section"
+                 style="display:none;">
+
+            <div class="profile-wrapper">
+
+                <div class="profile-card">
+
+                    <div class="profile-card-header">
+                        <h2>My Profile</h2>
+                        <p>Manage your personal information.</p>
+                    </div>
+
+
+                    <form action="/customer/profile/update"
+                          method="post"
+                          class="profile-form">
+
+                        <div class="profile-grid">
+
+                            <div class="profile-group">
+
+                                <label>Full Name</label>
+
+                                <input type="text"
+                                       name="fullname"
+                                       th:value="${customer.fullname}"
+                                       required>
+
+                            </div>
+
+
+                            <div class="profile-group">
+
+                                <label>Email Address</label>
+
+                                <input type="email"
+                                       th:value="${customer.email}"
+                                       readonly
+                                       class="readonly-field">
+
+                            </div>
+
+
+                            <div class="profile-group">
+
+                                <label>Phone Number</label>
+
+                                <input type="text"
+                                       name="phone"
+                                       th:value="${customer.phone}"
+                                       required>
+
+                            </div>
+
+
+                            <div class="profile-group profile-group-full">
+
+                                <label>Address</label>
+
+                                <textarea name="address"
+                                          rows="4"
+                                          th:text="${customer.address}"
+                                          placeholder="Enter your address"></textarea>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-btn-row">
+
+                            <button type="submit"
+                                    class="profile-save-btn">
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="profile-card">
+
+                    <div class="profile-card-header">
+
+                        <h2>Change Password</h2>
+
+                        <p>
+                            Enter your current password before choosing a new one.
+                        </p>
+
+                    </div>
+
+
+                    <form action="/customer/profile/password"
+                          method="post">
+
+                        <div class="profile-grid">
+
+
+                            <div class="profile-group">
+
+                                <label>Current Password</label>
+
+                                <input type="password"
+                                       name="oldPassword"
+                                       placeholder="Enter current password"
+                                       required>
+
+                            </div>
+
+
+                            <div class="profile-group">
+
+                                <label>New Password</label>
+
+                                <input type="password"
+                                       name="newPassword"
+                                       placeholder="Enter new password"
+                                       required>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-btn-row">
+
+                            <button type="submit"
+                                    class="profile-password-btn">
+                                Change Password
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+<script>
+
+    function showCustomerSection(section){
+
+        if(section === "profile"){
+
+            const profile =
+                document.getElementById("customer-profile-section");
+
+            profile.style.display = "block";
+
+            profile.scrollIntoView({
+                behavior:"smooth",
+                block:"start"
+            });
+
+        }
+
+
+        if(section === "medicines"){
+
+            const medicines =
+                document.getElementById("customer-medicine-section");
+
+            medicines.scrollIntoView({
+                behavior:"smooth",
+                block:"start"
+            });
+
+        }
+
+    }
+
+</script>
+
+<script>
+
+    function filterMedicines(){
+
+        const searchText =
+            document.getElementById("medicineSearch")
+                .value
+                .trim()
+                .toLowerCase();
+
+
+        const cards =
+            document.querySelectorAll(".medicine-card");
+
+
+        let found = false;
+
+
+        cards.forEach(function(card){
+
+            const name =
+                (card.dataset.name || "").toLowerCase();
+
+            const generic =
+                (card.dataset.generic || "").toLowerCase();
+
+            const category =
+                (card.dataset.category || "").toLowerCase();
+
+            const manufacturer =
+                (card.dataset.manufacturer || "").toLowerCase();
+
+
+            const match =
+                name.includes(searchText) ||
+                generic.includes(searchText) ||
+                category.includes(searchText) ||
+                manufacturer.includes(searchText);
+
+
+            if(match){
+
+                card.style.display = "";
+                found = true;
+
+            }else{
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        const notFound =
+            document.getElementById("noMedicineFound");
+
+
+        if(searchText !== "" && !found){
+
+            notFound.style.display = "block";
+
+        }else{
+
+            notFound.style.display = "none";
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

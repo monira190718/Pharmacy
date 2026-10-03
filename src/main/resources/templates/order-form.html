@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Place Your Order</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      padding:0;
+      background:#f7f3e9;
+      font-family:'IBM Plex Sans', sans-serif;
+      color:#18312a;
+    }
+
+    .page-wrap{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:50px 20px;
+    }
+
+    .order-card{
+      width:100%;
+      max-width:900px;
+      background:#fffdf8;
+      border:1px solid #ddd5c6;
+      border-radius:22px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.06);
+      overflow:hidden;
+    }
+
+    .order-header{
+      background:#1f5a4a;
+      color:white;
+      padding:28px 34px;
+    }
+
+    .order-header h1{
+      margin:0 0 8px;
+      font-family:'Fraunces', serif;
+      font-size:38px;
+      font-weight:600;
+    }
+
+    .order-header p{
+      margin:0;
+      font-size:15px;
+      color:#e6f0ec;
+    }
+
+    .order-body{
+      padding:32px 34px 36px;
+    }
+
+    .section-title{
+      font-family:'Fraunces', serif;
+      font-size:24px;
+      margin:0 0 22px;
+      color:#142d26;
+    }
+
+    form{
+      width:100%;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+
+    .form-group{
+      display:flex;
+      flex-direction:column;
+    }
+
+    .full-width{
+      grid-column:1 / -1;
+    }
+
+    label{
+      margin-bottom:8px;
+      font-size:14px;
+      font-weight:600;
+      color:#28443a;
+    }
+
+    input,
+    textarea{
+      width:100%;
+      padding:13px 14px;
+      border:1px solid #d8d1c2;
+      border-radius:12px;
+      background:white;
+      font-size:15px;
+      color:#223b33;
+      outline:none;
+      transition:all .2s ease;
+    }
+
+    input:focus,
+    textarea:focus{
+      border-color:#2f6b59;
+      box-shadow:0 0 0 3px rgba(47,107,89,0.10);
+    }
+
+    input[readonly]{
+      background:#f4f1ea;
+      color:#5c655f;
+      cursor:not-allowed;
+    }
+
+    textarea{
+      min-height:110px;
+      resize:vertical;
+    }
+
+    .summary-box{
+      margin-top:28px;
+      padding:20px 22px;
+      border:1px solid #e1d9ca;
+      border-radius:16px;
+      background:#fbf8f1;
+    }
+
+    .summary-box h3{
+      margin:0 0 14px;
+      font-family:'Fraunces', serif;
+      font-size:24px;
+      color:#18312a;
+    }
+
+    .summary-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:8px 0;
+      font-size:15px;
+      border-bottom:1px solid #ece5d8;
+    }
+
+    .summary-row:last-child{
+      border-bottom:none;
+    }
+
+    .summary-total{
+      margin-top:14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:24px;
+      font-weight:700;
+      color:#0f2d25;
+    }
+
+    .btn-row{
+      margin-top:28px;
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .btn-primary{
+      background:#135b4a;
+      color:white;
+      border:none;
+      border-radius:12px;
+      padding:13px 24px;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .btn-primary:hover{
+      background:#0f4c3d;
+    }
+
+    .btn-secondary{
+      text-decoration:none;
+      background:#efe8d8;
+      color:#2b3f38;
+      border-radius:12px;
+      padding:13px 24px;
+      font-size:15px;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      transition:.2s ease;
+    }
+
+    .btn-secondary:hover{
+      background:#e4dccb;
+    }
+    .payment-options{
+
+      display:flex;
+      gap:25px;
+      margin-top:10px;
+
+    }
+
+
+    .payment-options label{
+
+      background:#f7f3e9;
+      padding:12px 20px;
+      border-radius:12px;
+      cursor:pointer;
+
+    }
+
+
+    .payment-options input{
+
+      margin-right:8px;
+
+    }
+    @media (max-width:768px){
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .order-header h1{
+        font-size:30px;
+      }
+
+      .order-body{
+        padding:24px 20px 28px;
+      }
+
+      .summary-total{
+        font-size:20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+  <div class="order-card">
+
+    <div class="order-header">
+      <h1>Place Your Order</h1>
+      <p>Review your medicine details, add delivery information, and confirm your order.</p>
+    </div>
+
+    <div class="order-body">
+      <h2 class="section-title">Order Details</h2>
+
+      <form action="/order/save" method="post" th:object="${order}">
+
+        <!-- hidden fields -->
+        
+        <input type="hidden" th:field="*{medicineId}">
+        <input type="hidden" th:field="*{customerEmail}">
+        <input type="hidden" th:field="*{price}" id="unitPrice">
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Medicine Name</label>
+            <input type="text" th:field="*{medicineName}" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>Customer Name</label>
+            <input type="text" th:field="*{customerName}" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text"
+                   th:field="*{phone}"
+                   placeholder="Enter your phone number"
+                   required>
+          </div>
+
+          <div class="form-group">
+            <label>Quantity</label>
+            <input type="number"
+                   th:field="*{quantity}"
+                   id="quantity"
+                   min="1"
+                   value="1"
+                   required>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Delivery Address</label>
+            <textarea th:field="*{address}"
+                      placeholder="Enter your full delivery address"
+                      maxlength="100"
+                      required></textarea>
+          </div>
+
+          <div class="form-group">
+
+            <label>
+              Expected Delivery Date
+            </label>
+
+
+            <input type="date"
+                   id="deliveryDate"
+                   th:field="*{deliveryDate}"
+                   required>
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Payment Method
+          </label>
+          
+          <div class="payment-options">
+
+
+            <label>
+              <input type="radio"
+                     th:field="*{paymentMethod}"
+                     value="bKash"
+                     required>
+
+              bKash
+
+            </label>
+
+            <label> <input type="radio"
+                     th:field="*{paymentMethod}"
+                     value="Nagad"> Nagad  </label>
+            <label>
+
+              <input type="radio"
+                     th:field="*{paymentMethod}"
+                     value="Card">
+
+              Card </label>
+
+          </div> </div>
+
+        <div class="summary-box">
+          <h3>Order Summary</h3>
+
+          <div class="summary-row">
+            <span>Unit Price</span>
+            <strong>৳ <span id="unitPriceText" th:text="${order.price}">0.0</span></strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Quantity</span>
+            <strong><span id="quantityText">1</span></strong>
+          </div>
+
+          <div class="summary-total">
+            <span>Total Price</span>
+            <span>৳ <span id="totalPrice" th:text="${order.price}">0.0</span></span>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" class="btn-primary">
+            Confirm Order
+          </button>
+
+          <a href="/customer" class="btn-secondary">
+            Cancel
+          </a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const quantityInput = document.getElementById("quantity");
+  const unitPriceInput = document.getElementById("unitPrice");
+  const unitPriceText = document.getElementById("unitPriceText");
+  const quantityText = document.getElementById("quantityText");
+  const totalPrice = document.getElementById("totalPrice");
+
+  function updateTotal(){
+    const quantity = parseInt(quantityInput.value) || 1;
+    const unitPrice = parseFloat(unitPriceInput.value) || 0;
+
+    quantityText.textContent = quantity;
+    totalPrice.textContent = (quantity * unitPrice).toFixed(2);
+    unitPriceText.textContent = unitPrice.toFixed(2);
+  }
+
+  quantityInput.addEventListener("input", updateTotal);
+  updateTotal();
+</script>
+
+<script>
+
+  const today = new Date().toISOString().split("T")[0];
+
+  document.getElementById("deliveryDate").setAttribute("min", today);
+
+</script>
+
+</body>
+</html>
